@@ -1,6 +1,6 @@
-//import 'package:book_tracker/widgets/create_account_form.dart';
-//import 'package:book_tracker/widgets/login_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_book_tracker/src/widgets/create_account_form.dart';
+import 'package:flutter_web_book_tracker/src/widgets/login_form.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,7 +10,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isCreateAccountClicked = false;
 
-  final _formKey = GlobalKey<FormState>();
+//  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
@@ -25,6 +26,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     color: Color(0xffb9c2d1),
                   )),
+              SizedBox(
+                height: 15,
+              ),
               Text(
                 'Sign In',
                 style: Theme.of(context).textTheme.headline5,
@@ -36,16 +40,16 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   SizedBox(
                       width: 300,
-                      height: 300,
-//                      child: isCreateAccountClicked != true
-//                          ? LoginForm(
-//                          formKey: _formKey,
-//                          emailTextController: _emailTextController,
-//                          passwordTextController: _passwordTextController)
-//                          : CreateAccountForm(
-//                          formKey: _formKey,
-//                          emailTextController: _emailTextController,
-//                          passwordTextController: _passwordTextController)
+                      height: 350,
+                      child: isCreateAccountClicked != true
+                          ? LoginForm(
+                          formKey: _formKey,
+                          emailTextController: _emailTextController,
+                          passwordTextController: _passwordTextController)
+                          : CreateAccountForm(
+                          formKey: _formKey,
+                          emailTextController: _emailTextController,
+                          passwordTextController: _passwordTextController)
                   ),
                   TextButton.icon(
                       icon: Icon(Icons.portrait_rounded),
@@ -59,7 +63,11 @@ class _LoginPageState extends State<LoginPage> {
                             isCreateAccountClicked = true;
                           } else
                             isCreateAccountClicked = false;
-                          print('isCreateAccountClicked: ${isCreateAccountClicked.toString()}');
+
+                          _passwordTextController.text = ''; // 초기화
+                          _formKey = GlobalKey<FormState>(); // 키값 초기화
+//                          print('isCreateAccountClicked: ${isCreateAccountClicked.toString()}');
+//                          print('_formKey: ${_formKey.toString()}');
                         });
                       },
                       label: Text(isCreateAccountClicked
