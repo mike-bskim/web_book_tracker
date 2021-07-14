@@ -1,8 +1,10 @@
 //import 'package:book_tracker/screens/main_screen.dart';
 //import 'package:book_tracker/widgets/input_decoration.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_book_tracker/src/screens/main_screen.dart';
 import 'package:flutter_web_book_tracker/src/widgets/input_decoration.dart';
 
 class LoginForm extends StatelessWidget {
@@ -64,26 +66,28 @@ class LoginForm extends StatelessWidget {
             onPressed: () {
               print('Sign In');
               if (_formKey.currentState!.validate()) {
-//                FirebaseAuth.instance
-//                    .signInWithEmailAndPassword(
-//                    email: _emailTextController.text,
-//                    password: _passwordTextController.text)
-//                    .then((value) {
-//                  Navigator.push(
-//                      context,
-//                      MaterialPageRoute(
-//                          builder: (context) => MainScreenPage()));
-//                }).catchError((onError) {
-//                  return showDialog(
-//                    context: context,
-//                    builder: (context) {
-//                      return AlertDialog(
-//                        title: Text('Oops!'),
-//                        content: Text('${onError.message}'),
-//                      );
-//                    },
-//                  );
-//                });
+                FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                    email: _emailTextController.text,
+                    password: _passwordTextController.text)
+                    .then((value) {
+                      print(value.user.toString());
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MainScreenPage()));
+                }).catchError((onError) {
+                  // ignore: invalid_return_type_for_catch_error
+                  return showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Oops!'),
+                        content: Text('${onError.message}'),
+                      );
+                    },
+                  );
+                });
               }
             }
         )

@@ -29,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 15,
               ),
-              Text(
-                'Sign In',
+              Text(isCreateAccountClicked ?
+                'Create Account' : 'Sign In',
                 style: Theme.of(context).textTheme.headline5,
               ),
               SizedBox(

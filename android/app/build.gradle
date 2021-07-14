@@ -34,9 +34,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "kr.honge.flutter_web_book_tracker"
+//        applicationId "kr.honge.flutter_web_book_tracker"
+        applicationId "kr.honge.huatang2"
         minSdkVersion 16
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
