@@ -1,19 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/model/user.dart';
 import 'package:flutter_web_book_tracker/src/screens/login_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_web_book_tracker/src/widgets/create_profile.dart';
+import 'package:flutter_web_book_tracker/src/widgets/input_decoration.dart';
+//import 'package:provider/provider.dart';
 
 class MainScreenPage extends StatelessWidget {
+//  final TextEditingController _displayNameTextController = TextEditingController();
+//  final TextEditingController _professionTextContorller = TextEditingController();
+//  final TextEditingController _quoteTextController = TextEditingController();
+//  final TextEditingController _avatarTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference userCollectionReference =
-    FirebaseFirestore.instance.collection('users');
-    CollectionReference bookCollectionReference =
-    FirebaseFirestore.instance.collection('books');
-    List<Book> userBooksReadList = [];
+    CollectionReference userCollectionReference = FirebaseFirestore.instance.collection('users');
+    CollectionReference bookCollectionReference = FirebaseFirestore.instance.collection('books');
+//    List<Book> userBooksReadList = [];
 
 //    var authUser = Provider.of<User>(context);
 
@@ -31,8 +37,10 @@ class MainScreenPage extends StatelessWidget {
             ),
             Text(
               'A.Reader',
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Colors.redAccent, fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -46,8 +54,6 @@ class MainScreenPage extends StatelessWidget {
                 );
               }
 
-//              print('authUser.uid: ${authUser.uid.toString()}');
-
               final userListStream = snapshot.data!.docs.map((user) {
                 return MUser.fromDocument(user);
               }).where((user) {
@@ -56,34 +62,157 @@ class MainScreenPage extends StatelessWidget {
               }).toList(); //[user]
 
               MUser curUser = userListStream[0];
-//              print(userListStream.length.toString());
-//              print(userListStream[0].uid);
 
               return Column(
                 children: [
                   SizedBox(
-                    height: 50,
-                    width: 50,
+                    height: 40,
+                    width: 40,
                     child: InkWell(
                       child: CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(curUser.avatarUrl != null
                             ? curUser.avatarUrl!
-                            : 'https://picsum.photos/200'),
-//                        backgroundImage: NetworkImage('https://picsum.photos/id/1/200/300'),// https://i.pravatar.cc/300
+                            : 'https://i.pravatar.cc/300'),
                         backgroundColor: Colors.white,
-//                        child: Text(''),
+                        child: Text(''),
                       ),
                       onTap: () {
-//                        showDialog(
-//                          context: context,
-//                          builder: (context) {
-//                            // return createProfileMobile(context, userListStream,
-//                            //     FirebaseAuth.instance.currentUser, null);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Container(
+                                height: 700,
+                                width: 400,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: NetworkImage(
+                                              curUser.avatarUrl ?? 'https://i.pravatar.cc/300'),
+                                          radius: 60,
+                                        )
+                                      ],
+                                    ),
+                                    Padding(padding: EdgeInsets.only(top: 8)),
+                                    Text(
+                                      'Books Reader',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(color: Colors.pinkAccent),
+                                    ),
+                                    Padding(padding: EdgeInsets.only(top: 8)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(curUser.displayName.toUpperCase(),
+                                              style: Theme.of(context).textTheme.subtitle1),
+                                        ),
+                                        TextButton.icon(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return createProfileDialog(context, curUser);
+//                                                return createProfileDialog(
+//                                                    curUser: curUser,
+//                                                    displayNameTextController:
+//                                                        _displayNameTextController,
+//                                                    professionTextContorller:
+//                                                        _professionTextContorller,
+//                                                    quoteTextController: _quoteTextController,
+//                                                    avatarTextController: _avatarTextController
+//                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.mode_edit,
+                                            color: Colors.black12,
+                                          ),
+                                          label: Text(''),
+                                        )
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        '${curUser.profession}',
+                                        style: Theme.of(context).textTheme.subtitle1,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 100,
+                                      height: 2,
+                                      child: Container(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(width: 2, color: Colors.blueGrey.shade100),
+                                          color: Color(0xfff1f3f6),
+                                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                'Favorite Quote: ',
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              height: 2,
+                                              child: Container(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  curUser.quote == null
+                                                      ? ' "Life is great..." '
+                                                      : '" ${curUser.quote}  "',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2!
+                                                      .copyWith(fontStyle: FontStyle.italic),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ), //Text(curUser.displayName),
+                            );
+                            // return createProfileMobile(context, userListStream,
+                            //     FirebaseAuth.instance.currentUser, null);
 //                            return createProfileDialog(
 //                                context, curUser, userBooksReadList);
-//                          },
-//                        );
+                          },
+                        );
                       },
                     ),
                   ),
@@ -127,14 +256,10 @@ class MainScreenPage extends StatelessWidget {
             margin: const EdgeInsets.only(top: 12, left: 12, bottom: 10),
             width: double.infinity,
             child: RichText(
-                text: TextSpan(
-                    style: Theme.of(context).textTheme.headline5,
-                    children: [
-                      TextSpan(text: 'Your reading\n activity '),
-                      TextSpan(
-                          text: 'right now...',
-                          style: TextStyle(fontWeight: FontWeight.bold))
-                    ])),
+                text: TextSpan(style: Theme.of(context).textTheme.headline5, children: [
+              TextSpan(text: 'Your reading\n activity '),
+              TextSpan(text: 'right now...', style: TextStyle(fontWeight: FontWeight.bold))
+            ])),
           ),
           SizedBox(
             height: 10,
@@ -230,13 +355,13 @@ class MainScreenPage extends StatelessWidget {
                     padding: const EdgeInsets.all(18.0),
                     child: RichText(
                         text: TextSpan(children: [
-                          TextSpan(
-                              text: 'Reading List',
-                              style: TextStyle(
+                      TextSpan(
+                          text: 'Reading List',
+                          style: TextStyle(
 //                                  color: kBlackColor,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold))
-                        ])),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold))
+                    ])),
                   )
                 ],
               )),
@@ -295,3 +420,4 @@ class MainScreenPage extends StatelessWidget {
     );
   }
 }
+
