@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/model/user.dart';
 import 'package:flutter_web_book_tracker/src/screens/login_page.dart';
+import 'package:flutter_web_book_tracker/src/widgets/book_search_page.dart';
 import 'package:flutter_web_book_tracker/src/widgets/create_profile.dart';
 
 class MainScreenPage extends StatelessWidget {
@@ -145,11 +146,11 @@ class MainScreenPage extends StatelessWidget {
               }
 //              print(snapshot.data!.docs.first.data().toString()); //cho@me.com
 
-              final bookListStream = snapshot.data!.docs.map((book) {
-                return Book.fromMap(book.data() as Map<String, dynamic>);
-              }).toList();
-              Book book = bookListStream[0];
-              return Text(book.author);
+//              final bookListStream = snapshot.data!.docs.map((book) {
+//                return Book.fromMap(book.data() as Map<String, dynamic>);
+//              }).toList();
+//              Book book = bookListStream[0];
+              return Container(); //Text(book.author);
 
 //              var userBookFilteredReadListStream =
 //              snapshot.data!.docs.map((book) {

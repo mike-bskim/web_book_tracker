@@ -3,44 +3,50 @@
 //import 'package:flutter_web_book_tracker/src/constants/constants.dart';
 
 class Book {
-  final String id;
+  final String? id;
   final String title;
   final String author;
-  final String notes;
-//  final String photoUrl;
+  final String? notes;
+  final String? photoUrl;
   final String categories;
-//  final String publishedDate;
+  final String publishedDate;
 //  final double rating;
   final String description;
-//  final int pageCount;
+  final int pageCount;
 //  final Timestamp startedReading;
 //  final Timestamp finishedReading;
-//  final String userId;
+  final String? userId;
 
   Book({
-    required this.id,
+    this.id,
     required this.title,
     required this.author,
-    required this.notes,
-//    required this.photoUrl,
+    this.notes,
+    this.photoUrl,
     required this.categories,
-//    required this.publishedDate,
+    required this.publishedDate,
 //    required this.rating,
     required this.description,
-//    required this.pageCount,
+    required this.pageCount,
 //    required this.startedReading,
 //    required this.finishedReading,
-//    required this.userId,
+    this.userId,
   });
 
   factory Book.fromMap(Map<String, dynamic> data) {
+    print('fromMap' + data.toString());
+//    Map<String, dynamic> info = data.data();
     return Book(
-        id: data['id'],
-        title: data['title']!,
-        author: data['author']!,
-        notes: data['notes']!,
-        categories: data['categories']!,
-        description: data['description'],
+      id: data['id'],
+      title: data['title']!,
+      author: data['author']!,
+      notes: data['notes']!,
+      photoUrl: data['photoUrl']!,
+      categories: data['categories']!,
+      publishedDate: data['publishedDate']!,
+      description: data['description'],
+      pageCount: data['pageCount']!,
+      userId: data['user_id']!,
     );
   }
 
