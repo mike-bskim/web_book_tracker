@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_book_tracker/src/model/book.dart';
+//import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/model/user.dart';
 import 'package:flutter_web_book_tracker/src/screens/login_page.dart';
 import 'package:flutter_web_book_tracker/src/widgets/book_search_page.dart';

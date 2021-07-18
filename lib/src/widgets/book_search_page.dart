@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/widgets/input_decoration.dart';
+import 'package:flutter_web_book_tracker/src/widgets/searched_book_detail_dialog.dart';
 import 'package:http/http.dart' as http;
 
 class BookSearchPage extends StatefulWidget {
@@ -55,25 +56,25 @@ class _BookSearchPageState extends State<BookSearchPage> {
                 SizedBox(
                   height: 12,
                 ),
-//                (listOfBooks != null)
-//                    ? Row(
-//                  mainAxisAlignment: MainAxisAlignment.center,
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  children: [
-//                    Expanded(
-//                        child: SizedBox(
-//                          width: 300,
-//                          height: 200,
-////                          child: ListView(
-////                            scrollDirection: Axis.horizontal,
-////                            children: createBookCards(listOfBooks, context),
-////                          ),
-//                        )),
-//                  ],
-//                )
-//                    : Center(
-//                  child: Text(''),
-//                )
+                (listOfBooks != null && listOfBooks.isNotEmpty)
+                ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: SizedBox(
+                          width: 300,
+                          height: 200,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: createBookCards(listOfBooks, context),
+                          ),
+                        )),
+                  ],
+                )
+                : Center(
+                    child: Text('No Book found'),
+                )
               ],
             ),          ),
         ),
@@ -83,12 +84,10 @@ class _BookSearchPageState extends State<BookSearchPage> {
 
   void _search() async {
     await fetchBooks(_searchTextController!.text).then((value) {
-      for (var item in value) {
-        print(item.photoUrl);
-      }
-//      setState(() {
-//        listOfBooks = value;
-//      });
+      setState(() {
+        listOfBooks = value;
+        print('_search is done: ' + listOfBooks.length.toString());
+      });
     return null;
     }, onError: (val) {
       throw Exception('Failed to load books ${val.toString()}');
@@ -159,46 +158,47 @@ class _BookSearchPageState extends State<BookSearchPage> {
     for (var book in books) {
       children.add(Container(
         width: 160,
-        margin: const EdgeInsets.symmetric(horizontal: 12.0),
+        margin: const EdgeInsets.symmetric(horizontal: 12.0), // 카드간 간격
         decoration:
-        BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
-//        child: Card(
-//          elevation: 5,
-//          color: Color(0xfff6f4ff),
-//          child: Wrap(
-//            children: [
-//              Image.network(
-//                (book.photoUrl == null || book.photoUrl.isEmpty)
-//                    ? 'https://images.unsplash.com/photo-1553729784-e91953dec042?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80'
-//                    : book.photoUrl,
-//                height: 100,
-//                width: 160,
-//              ),
-//              ListTile(
-//                title: Text(
-//                  book.title,
-//                  style: TextStyle(color: Color(0xff5d48b6)),
-//                  overflow: TextOverflow.ellipsis,
-//                ),
-//                subtitle: Text(
-//                  book.author,
-//                  overflow: TextOverflow.ellipsis,
-//                ),
-//                onTap: () {
-//                  showDialog(
-//                    context: context,
-//                    builder: (context) {
+        BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50))),
+        child: Card(
+          elevation: 5,
+          color: Color(0xfff6f4ff),
+          child: Wrap(
+            children: [
+              Container(height: 16,),
+              Image.network(
+                (book.photoUrl == null || book.photoUrl!.isEmpty)
+                    ? 'https://images.unsplash.com/photo-1553729784-e91953dec042?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80'
+                    : book.photoUrl!,
+                height: 100,
+                width: 160,
+              ),
+              ListTile(
+                title: Text(
+                  book.title,
+                  style: TextStyle(color: Color(0xff5d48b6)),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  book.author,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
 //                      return Container();
-////                      return SearchdBookDetailDialog(
-////                          book: book,
-////                          bookCollectionReference: _bookCollectionReference);
-//                    },
-//                  );
-//                },
-//              )
-//            ],
-//          ),
-//        ),
+                      return SearchdBookDetailDialog(
+                          book: book,
+                          bookCollectionReference: _bookCollectionReference);
+                    },
+                  );
+                },
+              )
+            ],
+          ),
+        ),
       ));
     }
     return children;
