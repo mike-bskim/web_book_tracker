@@ -25,14 +25,13 @@ class BookDetailsDialog extends StatefulWidget {
 class _BookDetailsDialogState extends State<BookDetailsDialog> {
   bool isReadingClicked = false;
   bool isFinishedReadingClicked = false;
-  TextEditingController? _notestTextController;
 
   double? _rating;
   final _bookCollectionReference = FirebaseFirestore.instance.collection('books');
 
   @override
   void initState() {
-    _notestTextController = TextEditingController(text: widget.book.notes);
+
     if (widget.book.rating == null) {
       print('widget.book.rating is null');
     }
@@ -44,15 +43,13 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
     TextEditingController _titleTextController = TextEditingController(text: widget.book.title);
     TextEditingController _authorTextController = TextEditingController(text: widget.book.author);
     TextEditingController _photoTextController = TextEditingController(text: widget.book.photoUrl);
+    TextEditingController _notestTextController = TextEditingController(text: widget.book.notes);
 
-    // TextEditingController _notestTextController =
-    //     TextEditingController(text: widget.book.notes);
-
-    print('(build)widget.book.rating: ${widget.book.rating.toString()}');
-    print('_titleTextController: ${_titleTextController.text.toString()}');
-    print('_authorTextController: ${_authorTextController.text.toString()}');
-    print('_photoTextController: ${_photoTextController.text.toString()}');
-    print('_notestTextController: ${_notestTextController!.text.toString()}');
+//    print('(build)widget.book.rating: ${widget.book.rating.toString()}');
+//    print('_titleTextController: ${_titleTextController.text.toString()}');
+//    print('_authorTextController: ${_authorTextController.text.toString()}');
+//    print('_photoTextController: ${_photoTextController.text.toString()}');
+//    print('_notestTextController: ${_notestTextController!.text.toString()}');
 
     return AlertDialog(
       title: Column(
@@ -121,6 +118,7 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                               } else {
                                 isReadingClicked = false;
                               }
+                              print('widget.book.id: ${widget.book.id.toString()}');
                             });
                           }
                         : null,
@@ -181,6 +179,11 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                             Icons.sentiment_very_satisfied,
                             color: Colors.green,
                           );
+                        case 5:
+                          return Icon(
+                            Icons.edit_location,
+                            color: Colors.green,
+                          );
                         default:
                           return Container();
                       }
@@ -188,6 +191,7 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                     onRatingUpdate: (rating) {
                       setState(() {
                         _rating = rating;
+                        print('_rating: ${_rating.toString()}');
                       });
                     }),
                 Padding(
@@ -225,24 +229,24 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
 //                            userChangedPhotoUrl ||
 //                            userChangedNotes;
 //                        if (bookUpdate) {
-//                          _bookCollectionReference
-//                              .doc(widget.book.id)
-//                              .update(Book(
-//                            userId: FirebaseAuth.instance.currentUser!.uid,
-//                            title: _titleTextController.text,
-//                            author: _authorTextController.text,
-//                            photoUrl: _photoTextController.text,
-//                            rating: _rating == null
-//                                ? widget.book.rating
-//                                : _rating,
-//                            startedReading: isReadingClicked
-//                                ? Timestamp.now()
-//                                : widget.book.startedReading,
-//                            finishedReading: isFinishedReadingClicked
-//                                ? Timestamp.now()
-//                                : widget.book.finishedReading,
-//                            notes: _notestTextController!.text,
-//                          ).toMap());
+                          _bookCollectionReference
+                              .doc(widget.book.id)
+                              .update(Book(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            title: _titleTextController.text,
+                            author: _authorTextController.text,
+                            photoUrl: _photoTextController.text,
+                            rating: _rating == null
+                                ? widget.book.rating
+                                : _rating,
+                            startedReading: isReadingClicked
+                                ? Timestamp.now()
+                                : widget.book.startedReading,
+                            finishedReading: isFinishedReadingClicked
+                                ? Timestamp.now()
+                                : widget.book.finishedReading,
+                            notes: _notestTextController.text,
+                          ).toMap());
 //                        }
 //
 //                        Navigator.of(context).pop();

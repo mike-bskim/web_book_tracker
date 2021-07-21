@@ -62,16 +62,16 @@ class Book {
         title: info['title']!,
         author: info['author']!,
         notes: info['notes'],
-        photoUrl: info['photo_url']!,
-        categories: info['categories']!,
-        publishedDate: info['published_date']!,
+        photoUrl: info['photo_url'],
+        categories: info['categories'],
+        publishedDate: info['published_date'],
 //        rating: parseDouble(info['rating']!),
         // rating: (info['rating'] as num) as double,
-        description: info['description']!,
-        pageCount: info['page_count']!,
-//        startedReading: info['started_reading_at']!,
-//        finishedReading: info['finished_reading_at']!,
-        userId: info['user_id']!);
+        description: info['description'],
+        pageCount: info['page_count'],
+        startedReading: info['started_reading_at'],
+        finishedReading: info['finished_reading_at'],
+        userId: info['user_id']);
   }
 
   Map<String, dynamic> toMap() {
@@ -82,7 +82,7 @@ class Book {
       'notes': notes,
       'photo_url': photoUrl,
       'published_date': publishedDate,
-      'rating': rating,
+//      'rating': rating,
       'description': description,
       'page_count': pageCount,
       'started_reading_at': startedReading,
