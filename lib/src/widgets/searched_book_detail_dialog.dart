@@ -19,6 +19,7 @@ class SearchdBookDetailDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 100, vertical: 100),
       content: Column(
         children: [
           Container(
@@ -62,7 +63,7 @@ class SearchdBookDetailDialog extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Text(
-                      book.description,
+                      book.description!,
                       style: TextStyle(wordSpacing: 0.9, letterSpacing: 1.5),
                     ),
                   ),

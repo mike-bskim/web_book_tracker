@@ -20,6 +20,7 @@ class TwoSidedRoundeButton extends StatelessWidget {
     return GestureDetector(
         onTap: press,
         child: Container(
+          width: 120,
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(

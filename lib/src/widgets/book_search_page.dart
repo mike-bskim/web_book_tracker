@@ -86,7 +86,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
     await fetchBooks(_searchTextController!.text).then((value) {
       setState(() {
         listOfBooks = value;
-        print('_search is done: ' + listOfBooks.length.toString());
+//        print('_search is done: ' + listOfBooks.length.toString());
       });
     return null;
     }, onError: (val) {
