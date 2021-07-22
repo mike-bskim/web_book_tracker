@@ -28,22 +28,28 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
 
   double? _rating;
   final _bookCollectionReference = FirebaseFirestore.instance.collection('books');
+  TextEditingController? _notestTextController;
+  TextEditingController? _titleTextController;
+  TextEditingController? _authorTextController;
+  TextEditingController? _photoTextController;
 
   @override
   void initState() {
+    _notestTextController = TextEditingController(text: widget.book.notes);
+    _titleTextController = TextEditingController(text: widget.book.title);
+    _authorTextController = TextEditingController(text: widget.book.author);
+    _photoTextController = TextEditingController(text: widget.book.photoUrl);
 
     if (widget.book.rating == null) {
       print('widget.book.rating is null');
+    } else {
+      _rating = widget.book.rating;
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _titleTextController = TextEditingController(text: widget.book.title);
-    TextEditingController _authorTextController = TextEditingController(text: widget.book.author);
-    TextEditingController _photoTextController = TextEditingController(text: widget.book.photoUrl);
-    TextEditingController _notestTextController = TextEditingController(text: widget.book.notes);
 
 //    print('(build)widget.book.rating: ${widget.book.rating.toString()}');
 //    print('_titleTextController: ${_titleTextController.text.toString()}');
@@ -113,12 +119,12 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                     onPressed: widget.book.startedReading == null
                         ? () {
                             setState(() {
-                              if (isReadingClicked == false) {
-                                isReadingClicked = true;
-                              } else {
-                                isReadingClicked = false;
-                              }
-                              print('widget.book.id: ${widget.book.id.toString()}');
+                              isReadingClicked = !isReadingClicked;
+//                              if (isReadingClicked == false) {
+//                                isReadingClicked = true;
+//                              } else {
+//                                isReadingClicked = false;
+//                              }
                             });
                           }
                         : null,
@@ -133,11 +139,12 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                     onPressed: widget.book.finishedReading == null
                         ? () {
                             setState(() {
-                              if (isFinishedReadingClicked == false) {
-                                isFinishedReadingClicked = true;
-                              } else {
-                                isFinishedReadingClicked = false;
-                              }
+                              isFinishedReadingClicked = !isFinishedReadingClicked;
+//                              if (isFinishedReadingClicked == false) {
+//                                isFinishedReadingClicked = true;
+//                              } else {
+//                                isFinishedReadingClicked = false;
+//                              }
                             });
                           }
                         : null,
@@ -210,32 +217,43 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                       radius: 12,
                       color: kIconColor,
                       press: () {
+                        print('widget.book.id: ${widget.book.id.toString()}');
+
                         // Only update if new data was entered
-//                        final userChangedTitle =
-//                            widget.book.title != _titleTextController.text;
-//                        final userChangedAuthor =
-//                            widget.book.author != _authorTextController.text;
-//                        final userChangedPhotoUrl =
-//                            widget.book.author != _photoTextController.text;
-//
-//                        final userChangedRating = widget.book.rating != _rating;
-//
-//                        final userChangedNotes =
-//                            widget.book.notes != _notestTextController!.text;
-//
-//                        final bookUpdate = userChangedTitle ||
-//                            userChangedAuthor ||
-//                            userChangedRating ||
-//                            userChangedPhotoUrl ||
-//                            userChangedNotes;
-//                        if (bookUpdate) {
+                        final userChangedTitle =
+                            widget.book.title != _titleTextController!.text;
+                        final userChangedAuthor =
+                            widget.book.author != _authorTextController!.text;
+                        final userChangedPhotoUrl =
+                            widget.book.photoUrl != _photoTextController!.text;
+
+                        final userChangedRating = widget.book.rating != _rating;
+
+                        final userChangedNotes =
+                            widget.book.notes != _notestTextController!.text;
+
+//                        print('userChangedTitle: ${userChangedTitle.toString()}');
+//                        print('userChangedAuthor: ${userChangedAuthor.toString()}');
+//                        print('userChangedRating: ${userChangedRating.toString()}');
+//                        print('${widget.book.rating.toString()}, ${_rating.toString()}');
+//                        print('userChangedPhotoUrl: ${userChangedPhotoUrl.toString()}');
+//                        print('userChangedNotes: ${userChangedNotes.toString()}');
+
+                        final bookUpdate = userChangedTitle ||
+                            userChangedAuthor ||
+                            userChangedRating ||
+                            userChangedPhotoUrl ||
+                            userChangedNotes;
+
+                        if (bookUpdate) {
+                          print('(bookUpdate)widget.book.id: ${widget.book.id.toString()}');
                           _bookCollectionReference
                               .doc(widget.book.id)
                               .update(Book(
                             userId: FirebaseAuth.instance.currentUser!.uid,
-                            title: _titleTextController.text,
-                            author: _authorTextController.text,
-                            photoUrl: _photoTextController.text,
+                            title: _titleTextController!.text,
+                            author: _authorTextController!.text,
+                            photoUrl: _photoTextController!.text,
                             rating: _rating == null
                                 ? widget.book.rating
                                 : _rating,
@@ -245,11 +263,12 @@ class _BookDetailsDialogState extends State<BookDetailsDialog> {
                             finishedReading: isFinishedReadingClicked
                                 ? Timestamp.now()
                                 : widget.book.finishedReading,
-                            notes: _notestTextController.text,
+                            notes: _notestTextController!.text,
                           ).toMap());
-//                        }
-//
-//                        Navigator.of(context).pop();
+
+                        }
+
+                        Navigator.of(context).pop();
                       },
                     ),
                     TwoSidedRoundeButton(

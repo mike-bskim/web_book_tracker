@@ -22,6 +22,8 @@ class MainScreenPage extends StatelessWidget {
 
 //    var authUser = Provider.of<User>(context);
 
+    int booksRead = 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white24,
@@ -81,7 +83,7 @@ class MainScreenPage extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             print('createProfileDialog');
-                            return createProfileDialog(context, curUser);
+                            return createProfileDialog(context, curUser, userBooksReadList);
                             // return createProfileMobile(context, userListStream,
                             //     FirebaseAuth.instance.currentUser, null);
                           },
@@ -156,8 +158,19 @@ class MainScreenPage extends StatelessWidget {
                 snapshot.data!.docs.map((book) {
                   return Book.fromDocument(book);
                 }).where((book) {
-                  return (book.userId == FirebaseAuth.instance.currentUser!.uid);
+                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                      && (book.startedReading != null)
+                      && (book.finishedReading == null);
                 }).toList();
+
+                userBooksReadList = snapshot.data!.docs.map((book) {
+                  return Book.fromDocument(book);
+                }).where((book) {
+                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                      && (book.finishedReading != null)
+                      && (book.startedReading != null);
+                }).toList();
+//                  booksRead = userBooksReadList.length;
 
                 return Container(
                   height: 300,
@@ -175,6 +188,7 @@ class MainScreenPage extends StatelessWidget {
                             image: book.photoUrl,
                             buttonText: 'Reading',
                             pressRead: () {print('Reading');},
+                            rating: book.rating != null ? (book.rating) : 0.5,
                           ),
                           onTap: () => showDialog(
                             context: context,
@@ -228,39 +242,36 @@ class MainScreenPage extends StatelessWidget {
               var readingListListBook = snapshot.data!.docs.map((book) {
                 return Book.fromDocument(book);
               }).where((book) {
-                return (book.userId == FirebaseAuth.instance.currentUser!.uid);
-//                return (book.userId == authUser.uid) &&
-//                    (book.finishedReading == null) &&
-//                    (book.startedReading == null);
+                return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                    && (book.finishedReading == null)
+                    && (book.startedReading == null)
+                ;
               }).toList();
 
-              return Expanded(
-                  flex: 2,
+              return Container(
+                  height: 300,
                   child: (readingListListBook.length > 0)
                       ? ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: readingListListBook.length,
                     itemBuilder: (context, index) {
                       Book book = readingListListBook[index];
-/*
-                        return ReadingListCard(
-                          title: book.title,
-                          author: book.author,
-                          image: book.photoUrl,
-                          buttonText: 'Reading',
-                          pressRead: () {print('pressRead');},
-                        );
 
-* */
+                      return InkWell(
+                        child: ReadingListCard(
+                            buttonText: 'Not Started',
+                            rating: book.rating != null ? (book.rating) : 4.0,
+                            author: book.author,
+                            image: book.photoUrl,
+                            title: book.title,
+                            pressRead: () {print('Not started');},
+                        ),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) =>
+                              BookDetailsDialog(book: book),
+                        ),
 
-                      return ReadingListCard(
-                          buttonText: 'Not Started',
-                          rating: 4.3,
-//                          book.rating != null ? (book.rating) : 4.0,
-                          author: book.author,
-                          image: book.photoUrl,
-                          title: book.title,
-                          pressRead: () {print('Not started');},
                       );
                     },
                   )

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/model/user.dart';
 import 'package:flutter_web_book_tracker/src/widgets/update_user_profile.dart';
+import 'package:flutter_web_book_tracker/src/widgets/util.dart';
 
-Widget createProfileDialog(BuildContext context, MUser curUser) {
+Widget createProfileDialog(BuildContext context, MUser curUser, List<Book> bookList) {
   final TextEditingController _displayNameTextController =
       TextEditingController(text: curUser.displayName);
   final TextEditingController _professionTextContorller =
@@ -14,7 +16,7 @@ Widget createProfileDialog(BuildContext context, MUser curUser) {
   return AlertDialog(
     content: Container(
       height: 700,
-      width: 400,
+//      width: 600,
       child: Column(
         children: [
           Row(
@@ -29,7 +31,8 @@ Widget createProfileDialog(BuildContext context, MUser curUser) {
           ),
           Padding(padding: EdgeInsets.only(top: 8)),
           Text(
-            'Books Reader',
+            'Books Read (${bookList.length.toString()})',
+//            'Books Read (${booksRead.toString()})',
             style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.pinkAccent),
           ),
           Padding(padding: EdgeInsets.only(top: 8)),
@@ -132,6 +135,41 @@ Widget createProfileDialog(BuildContext context, MUser curUser) {
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: ListView.builder(
+//                itemExtent: 200,
+                itemCount: bookList.length,
+                itemBuilder: (context, index) {
+                  Book book = bookList[index];
+                  return Card(
+                    elevation: 2.0,
+                    child: Column(
+                      children: [
+                        Container(
+//                          color: Colors.red,
+                          child: ListTile(
+                            title: Text('${book.title}'),
+                            leading: CircleAvatar(
+                              radius: 35,
+                              backgroundImage: NetworkImage(book.photoUrl!),
+                            ),
+                            subtitle: Text('${book.author}'),
+                          ),
+                        ),
+                        Text('Finished on: ${formatDate(book.finishedReading!)}')
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
         ],
       ),
     ), //Text(curUser.displayName),
