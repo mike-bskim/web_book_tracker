@@ -20,9 +20,10 @@ class MainScreenPage extends StatelessWidget {
     CollectionReference bookCollectionReference = FirebaseFirestore.instance.collection('books');
     List<Book> userBooksReadList = [];
 
-//    var authUser = Provider.of<User>(context);
+    var authUser = Provider.of<User?>(context);
+//    print('MainScreenPage >> authUser: ${authUser.toString()}');
 
-    int booksRead = 0;
+//    int booksRead = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +60,8 @@ class MainScreenPage extends StatelessWidget {
               final userListStream = snapshot.data!.docs.map((user) {
                 return MUser.fromDocument(user);
               }).where((user) {
-                return (user.uid == FirebaseAuth.instance.currentUser!.uid);
+//                return (user.uid == FirebaseAuth.instance.currentUser!.uid);
+                return (user.uid == authUser!.uid);
               }).toList(); //[user]
 
               MUser curUser = userListStream[0];
@@ -84,8 +86,6 @@ class MainScreenPage extends StatelessWidget {
                           builder: (context) {
                             print('createProfileDialog');
                             return createProfileDialog(context, curUser, userBooksReadList);
-                            // return createProfileMobile(context, userListStream,
-                            //     FirebaseAuth.instance.currentUser, null);
                           },
                         );
                       },
@@ -158,7 +158,8 @@ class MainScreenPage extends StatelessWidget {
                 snapshot.data!.docs.map((book) {
                   return Book.fromDocument(book);
                 }).where((book) {
-                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+//                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                  return (book.userId == authUser!.uid)
                       && (book.startedReading != null)
                       && (book.finishedReading == null);
                 }).toList();
@@ -166,7 +167,8 @@ class MainScreenPage extends StatelessWidget {
                 userBooksReadList = snapshot.data!.docs.map((book) {
                   return Book.fromDocument(book);
                 }).where((book) {
-                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+//                  return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                  return (book.userId == authUser!.uid)
                       && (book.finishedReading != null)
                       && (book.startedReading != null);
                 }).toList();
@@ -242,7 +244,8 @@ class MainScreenPage extends StatelessWidget {
               var readingListListBook = snapshot.data!.docs.map((book) {
                 return Book.fromDocument(book);
               }).where((book) {
-                return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+//                return (book.userId == FirebaseAuth.instance.currentUser!.uid)
+                return (book.userId == authUser!.uid)
                     && (book.finishedReading == null)
                     && (book.startedReading == null)
                 ;

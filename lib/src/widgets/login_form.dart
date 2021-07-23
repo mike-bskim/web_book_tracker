@@ -71,7 +71,7 @@ class LoginForm extends StatelessWidget {
                     email: _emailTextController.text,
                     password: _passwordTextController.text)
                     .then((value) {
-                      print(value.user.toString());
+//                      print('login_form.dart: ' + value.user.toString());
                   Navigator.push(
                       context,
                       MaterialPageRoute(
