@@ -40,6 +40,11 @@ dependencies:
   provider: ^5.0.0
   rating_bar: ^0.2.0
 
+flutter_icons:
+  image_path: "assets/images/Icon-512.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
 
 dev_dependencies:
   flutter_test:

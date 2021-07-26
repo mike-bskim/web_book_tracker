@@ -25,6 +25,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('book search page >> build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Search'),

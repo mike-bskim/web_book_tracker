@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/model/user.dart';
+import 'package:flutter_web_book_tracker/src/util/util.dart';
 import 'package:flutter_web_book_tracker/src/widgets/update_user_profile.dart';
-import 'package:flutter_web_book_tracker/src/widgets/util.dart';
 
 Widget createProfileDialog(BuildContext context, MUser curUser, List<Book> bookList) {
   final TextEditingController _displayNameTextController =

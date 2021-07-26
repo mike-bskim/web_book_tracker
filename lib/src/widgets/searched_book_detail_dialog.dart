@@ -19,7 +19,7 @@ class SearchdBookDetailDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: 100, vertical: 100),
+//      insetPadding: EdgeInsets.symmetric(horizontal: 100, vertical: 100),
       content: Column(
         children: [
           Container(

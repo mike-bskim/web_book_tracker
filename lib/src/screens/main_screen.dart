@@ -174,8 +174,9 @@ class MainScreenPage extends StatelessWidget {
                 }).toList();
 //                  booksRead = userBooksReadList.length;
 
-                return Container(
-                  height: 300,
+                return Expanded(
+                    flex: 1,
+//                  height: 300,
                     child: (userBookFilteredReadListStream.length > 0)
                   ? ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -251,8 +252,9 @@ class MainScreenPage extends StatelessWidget {
                 ;
               }).toList();
 
-              return Container(
-                  height: 300,
+              return Expanded(
+                  flex: 1,
+//                  height: 300,
                   child: (readingListListBook.length > 0)
                       ? ListView.builder(
                     scrollDirection: Axis.horizontal,

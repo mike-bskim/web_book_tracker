@@ -40,7 +40,7 @@ class ReadingListCard extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 270,
+                height: 244,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(29),
@@ -72,10 +72,10 @@ class ReadingListCard extends StatelessWidget {
               )
           ),
           Positioned(
-              top: 170,
+              top: 160,
               child: Container(
 //                color: Colors.amberAccent,
-                height: 100,
+                height: 85,
                 width: 202,
                 child: Column(
                   children: [

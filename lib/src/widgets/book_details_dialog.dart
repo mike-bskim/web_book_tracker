@@ -5,9 +5,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_web_book_tracker/src/constants/constants.dart';
 import 'package:flutter_web_book_tracker/src/model/book.dart';
 import 'package:flutter_web_book_tracker/src/screens/main_screen.dart';
+import 'package:flutter_web_book_tracker/src/util/util.dart';
 import 'package:flutter_web_book_tracker/src/widgets/input_decoration.dart';
 import 'package:flutter_web_book_tracker/src/widgets/two_sided_roundbutton.dart';
-import 'package:flutter_web_book_tracker/src/widgets/util.dart';
+//import '../util/util.dart';
 //import 'package:rating_bar/rating_bar.dart';
 
 class BookDetailsDialog extends StatefulWidget {
